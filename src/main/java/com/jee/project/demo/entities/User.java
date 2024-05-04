@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "verified", nullable = false,updatable = false)
+    @Column(name = "verified", nullable = false, columnDefinition = "boolean default false")
     private boolean verified;
 
     @Column(name = "otp")

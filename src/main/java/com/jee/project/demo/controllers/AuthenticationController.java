@@ -1,6 +1,7 @@
 package com.jee.project.demo.controllers;
 
 import com.jee.project.demo.payload.requests.LoginRequest;
+import com.jee.project.demo.payload.requests.RegenerateOtpRequest;
 import com.jee.project.demo.payload.requests.RegisterRequest;
 import com.jee.project.demo.payload.requests.VerifyAccountRequest;
 import com.jee.project.demo.services.auth.AuthService;
@@ -30,5 +31,9 @@ public class AuthenticationController {
     @PutMapping("/verify-account")
     public ResponseEntity<Object> verifyAccount(@Valid @RequestBody VerifyAccountRequest request) {
         return ResponseEntity.ok(service.verifyAccount(request));
+    }
+    @PostMapping("/regenerate-otp")
+    public ResponseEntity<Object> regenerateOtp(@Valid @RequestBody RegenerateOtpRequest request) {
+        return ResponseEntity.ok(service.regenerateOtp(request));
     }
 }

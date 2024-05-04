@@ -8,6 +8,7 @@ import com.jee.project.demo.config.OTP;
 import com.jee.project.demo.entities.Role;
 import com.jee.project.demo.entities.User;
 import com.jee.project.demo.payload.requests.LoginRequest;
+import com.jee.project.demo.payload.requests.RegenerateOtpRequest;
 import com.jee.project.demo.payload.requests.RegisterRequest;
 import com.jee.project.demo.payload.requests.VerifyAccountRequest;
 import com.jee.project.demo.payload.response.ErrorResponse;
@@ -34,13 +35,14 @@ public class AuthImpli implements AuthService {
     private final UserRepo userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final OTP otpService;
     private final AuthenticationManager authenticationManager;
     private final Mail emailSenderCmp;
     private final RoleRepo roleRepository;
 
     public Object register(RegisterRequest request) {
 
-        if(userRepository.findByEmail(request.getEmail()).isPresent())
+        if (userRepository.findByEmail(request.getEmail()).isPresent())
             return MessageResponse.builder()
                     .message("Email already exists")
                     .http_code(HttpStatus.CONFLICT.value())
@@ -61,7 +63,7 @@ public class AuthImpli implements AuthService {
                     .build();
         }
 
-        String otpCode = OTP.generateOTP();
+        String otpCode = otpService.generateOTP();
 
         User user = User.builder()
                 .firstName(request.getFirstName())
@@ -156,5 +158,28 @@ public class AuthImpli implements AuthService {
         }
     }
 
+    public Object regenerateOtp(RegenerateOtpRequest request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new RuntimeException("User not found for email: " + request.getEmail())
+        );
+        if (!user.isVerified()) {
+            String otpCode = otpService.generateOTP();
+            user.setOtp(otpCode);
+            user.setOtpGeneratedTime(LocalDateTime.now());
+            userRepository.save(user);
+
+            emailSenderCmp.sendOtpVerification(request.getEmail(), otpCode);
+
+            return MessageResponse.builder()
+                    .message("A new OTP code has been generated and sent to your email")
+                    .http_code(HttpStatus.OK.value())
+                    .build();
+        } else {
+            return ErrorResponse.builder()
+                    .errors(List.of("Your account is already verified. You have access to the platform"))
+                    .http_code(HttpStatus.UNAUTHORIZED.value())
+                    .build();
+        }
+    }
 
 }
