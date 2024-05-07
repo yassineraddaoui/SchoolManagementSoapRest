@@ -1,0 +1,213 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://google.com"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="http://google.com">
+
+    <!-- Request and Response Types -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://google.com">
+            <xsd:complexType name="TeacherInfo">
+                <xsd:sequence>
+                    <xsd:element name="firstName" type="xsd:string"/>
+                    <xsd:element name="lastName" type="xsd:string"/>
+                    <xsd:element name="email" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="GetAllTeachersResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="teacher" type="tns:TeacherInfo" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="CreateTeacherRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="firstName" type="xsd:string"/>
+                        <xsd:element name="lastName" type="xsd:string"/>
+                        <xsd:element name="email" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="CreateTeacherResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="message" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="ReadTeacherRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ReadTeacherResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="firstName" type="xsd:string"/>
+                        <xsd:element name="lastName" type="xsd:string"/>
+                        <xsd:element name="email" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="UpdateTeacherRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="firstName" type="xsd:string"/>
+                        <xsd:element name="lastName" type="xsd:string"/>
+                        <xsd:element name="email" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UpdateTeacherResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="message" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="DeleteTeacherRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeleteTeacherResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="message" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Message Definitions -->
+    <wsdl:message name="createTeacherRequest">
+        <wsdl:part name="request" element="tns:CreateTeacherRequest"/>
+    </wsdl:message>
+    <wsdl:message name="createTeacherResponse">
+        <wsdl:part name="response" element="tns:CreateTeacherResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getAllTeachersRequest">
+        <!-- No parts needed for request -->
+    </wsdl:message>
+
+    <wsdl:message name="getAllTeachersResponse">
+        <wsdl:part name="response" element="tns:GetAllTeachersResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="readTeacherRequest">
+        <wsdl:part name="request" element="tns:ReadTeacherRequest"/>
+    </wsdl:message>
+    <wsdl:message name="readTeacherResponse">
+        <wsdl:part name="response" element="tns:ReadTeacherResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="updateTeacherRequest">
+        <wsdl:part name="request" element="tns:UpdateTeacherRequest"/>
+    </wsdl:message>
+    <wsdl:message name="updateTeacherResponse">
+        <wsdl:part name="response" element="tns:UpdateTeacherResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="deleteTeacherRequest">
+        <wsdl:part name="request" element="tns:DeleteTeacherRequest"/>
+    </wsdl:message>
+    <wsdl:message name="deleteTeacherResponse">
+        <wsdl:part name="response" element="tns:DeleteTeacherResponse"/>
+    </wsdl:message>
+
+    <!-- Port Type -->
+    <wsdl:portType name="TeacherPortType">
+
+        <wsdl:operation name="getAllTeachers">
+            <wsdl:input message="tns:getAllTeachersRequest"/>
+            <wsdl:output message="tns:getAllTeachersResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="createTeacher">
+            <wsdl:input message="tns:createTeacherRequest"/>
+            <wsdl:output message="tns:createTeacherResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="readTeacher">
+            <wsdl:input message="tns:readTeacherRequest"/>
+            <wsdl:output message="tns:readTeacherResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateTeacher">
+            <wsdl:input message="tns:updateTeacherRequest"/>
+            <wsdl:output message="tns:updateTeacherResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteTeacher">
+            <wsdl:input message="tns:deleteTeacherRequest"/>
+            <wsdl:output message="tns:deleteTeacherResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Binding -->
+    <wsdl:binding name="TeacherBinding" type="tns:TeacherPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="createTeacher">
+            <soap:operation soapAction="createTeacher" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="readTeacher">
+            <soap:operation soapAction="readTeacher" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateTeacher">
+            <soap:operation soapAction="updateTeacher" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteTeacher">
+            <soap:operation soapAction="deleteTeacher" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAllTeachers">
+            <soap:operation soapAction="getAllTeachers" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- Service -->
+    <wsdl:service name="TeacherService">
+        <wsdl:port name="TeacherPort" binding="tns:TeacherBinding">
+            <soap:address location="http://localhost:8080/service/teacher"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
